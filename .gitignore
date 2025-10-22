@@ -1,0 +1,24 @@
+# ide
+.vscode
+.idea
+
+# terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Crash log files (if you run Terraform locally)
+crash.log
+crash.*.log
+
+# misc
+*.img
+*img.xz
