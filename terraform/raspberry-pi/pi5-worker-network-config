@@ -1,0 +1,9 @@
+version: 2
+wifis:
+  renderer: networkd
+  wlan0:
+    dhcp4: true
+    optional: true
+    access-points:
+      "arty-home-5g":
+        password: "6e4ef3af06b02d1eb771dde68229fcb20f877b0cdfefb4f8380b97421a8c50cf"
