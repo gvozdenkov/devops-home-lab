@@ -4,15 +4,16 @@
 # Write it to sd card and copy cloud-init config
 # Check canoncial for official pi ubuntu version https://ubuntu.com/download/raspberry-pi
 
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 <device>"
-    echo "Example: $0 /dev/mmcblk0"
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <device> <partition"
+    echo "Example: $0 /dev/mmcblk0 1"
     exit 1
 fi
 
 VERSION=24.04.3
 IMAGE=ubuntu-24.04.3-preinstalled-server-arm64+raspi.img
 DEVICE=$1
+BOOT_PARTITION=$2
 
 # Download if not exists
 if [[ ! -f "$IMAGE" && ! -f "$IMAGE.xz"  ]]; then
@@ -73,9 +74,17 @@ BOOT_MOUNT=/mnt/piboot
 sudo mkdir -p $BOOT_MOUNT
 
 # Mount 1st boot partition
-sudo mount "$DEVICE"p1 $BOOT_MOUNT
+sudo mount "$DEVICE$BOOT_PARTITION" $BOOT_MOUNT
 
 # Copy cloud-init config files
-sudo cp pi5-worker-user-data $BOOT_MOUNT/user-data
-sudo cp pi5-worker-meta-data $BOOT_MOUNT/meta-data
-sudo cp pi5-worker-network-config $BOOT_MOUNT/network-config
+sudo cp pi5-user-data $BOOT_MOUNT/user-data
+sudo cp pi5-meta-data $BOOT_MOUNT/meta-data
+sudo cp pi5-network-config $BOOT_MOUNT/network-config
+
+# Check log
+cat $BOOT_MOUNT/user-data
+
+# Unmount
+sudo umount "$DEVICE$BOOT_PARTITION"
+
+echo "Done! Now you can remove SD and insert into raspberry pi pi5"

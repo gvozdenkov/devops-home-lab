@@ -1,5 +1,5 @@
 #cloud-config
-hostname: ${hostname}
+hostname: pi3
 manage_etc_hosts: true
 
 # GLOBAL SSH CONFIGURATION
@@ -17,7 +17,6 @@ users:
     passwd: $6$DqpOKhGL.o/YkNl5$zjDgYyb7deCK8ul6dCCIITR52iX.WfbuTKdBiOHSCiXZYjiLLjPT39qs0xxg/SttGNhqAqBTgC4IU87sEa86I1
 
     ssh_authorized_keys:
-  %{ for key in ssh_public_keys ~}
-    - ${key}
-  %{ endfor ~}
-
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO1y75bxiLzetHQthElV+4cj3G6ZSf5aHrDkIVNd+dSz ansible home lab eurocom
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKafBr+1LWBjzhg7AZ9vFtbuUmOoB0wajUZm19f/4/hJ bigbox ansible homelab
+  

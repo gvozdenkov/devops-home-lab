@@ -21,7 +21,7 @@ Terraform in this context acts as an orchestration and configuration management 
 
 If some `pi` node breaks, or sd card breaks, or add new node:
 
-1. Go to `terraform/variables.tf`/`terraform.tfvars` and check/add new node setup params (mac address, os, services tags, etc.)
+1. Go to `terraform/variables.tf`/`terraform.tfvars` and check/add new node setup params (mac address, os, tags, etc.)
 2. `terraform apply` new changes. This will generate cloud-init config files and script to write os on SD card for new node in `/terraform/raspberry-pi`
 3. Insert SD card and execute `/terraform/raspberry-pi/xxx-prepare-os.sh` script to write os to SD card
 4. Insert SD card to `pi` and this should work

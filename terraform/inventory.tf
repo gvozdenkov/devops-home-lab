@@ -2,7 +2,7 @@
 # with proper cloud-init config
 resource "local_file" "pi_prepare_os" {
   for_each = local.pi_nodes
-  filename = "${path.module}/raspberry-pi/${each.value.hostname}-${each.value.role}-prepare-os.sh"
+  filename = "${path.module}/raspberry-pi/${each.value.hostname}/${each.value.hostname}-prepare-os.sh"
 
   content = templatefile("${path.module}/templates/pi-prepare-os.tpl", {
     os_version = each.value.os_version
@@ -17,7 +17,7 @@ resource "local_file" "pi_prepare_os" {
 # Generate cloud-init meta-data config file
 resource "local_file" "pi_meta_data" {
   for_each = local.pi_nodes
-  filename = "${path.module}/raspberry-pi/${each.value.hostname}-${each.value.role}-meta-data"
+  filename = "${path.module}/raspberry-pi/${each.value.hostname}/${each.value.hostname}-meta-data"
 
   content = templatefile("${path.module}/templates/pi-meta-data.tpl", {
     hostname = each.value.hostname
@@ -29,11 +29,12 @@ resource "local_file" "pi_meta_data" {
 # Generate cloud-init network-config file
 resource "local_file" "pi_network_config" {
   for_each = local.pi_nodes
-  filename = "${path.module}/raspberry-pi/${each.value.hostname}-${each.value.role}-network-config"
+  filename = "${path.module}/raspberry-pi/${each.value.hostname}/${each.value.hostname}-network-config"
 
   content = templatefile("${path.module}/templates/pi-network-config.tpl", {
-    wifi_access_point = var.cluster_config.wifi_access_point
-    wifi_password     = var.cluster_config.wifi_password
+    addresses_ip = each.value.static_ip
+    gateway      = var.cluster_config.gateway
+    dns_servers  = jsonencode(var.cluster_config.dns_servers)
   })
 
   file_permission = "0600"
@@ -42,7 +43,7 @@ resource "local_file" "pi_network_config" {
 # Generate cloud-init user-data config file
 resource "local_file" "pi_user_data" {
   for_each = local.pi_nodes
-  filename = "${path.module}/raspberry-pi/${each.value.hostname}-${each.value.role}-user-data"
+  filename = "${path.module}/raspberry-pi/${each.value.hostname}/${each.value.hostname}-user-data"
 
   content = templatefile("${path.module}/templates/pi-user-data.tpl", {
     hostname        = each.value.hostname

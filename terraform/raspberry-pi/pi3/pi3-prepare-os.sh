@@ -10,8 +10,8 @@ if [ $# -ne 2 ]; then
     exit 1
 fi
 
-VERSION=${os_version}
-IMAGE=${os_name}.img
+VERSION=24.04.3
+IMAGE=ubuntu-24.04.3-preinstalled-server-arm64+raspi.img
 DEVICE=$1
 BOOT_PARTITION=$2
 
@@ -77,9 +77,9 @@ sudo mkdir -p $BOOT_MOUNT
 sudo mount "$DEVICE$BOOT_PARTITION" $BOOT_MOUNT
 
 # Copy cloud-init config files
-sudo cp ${hostname}-user-data $BOOT_MOUNT/user-data
-sudo cp ${hostname}-meta-data $BOOT_MOUNT/meta-data
-sudo cp ${hostname}-network-config $BOOT_MOUNT/network-config
+sudo cp pi3-user-data $BOOT_MOUNT/user-data
+sudo cp pi3-meta-data $BOOT_MOUNT/meta-data
+sudo cp pi3-network-config $BOOT_MOUNT/network-config
 
 # Check log
 cat $BOOT_MOUNT/user-data
@@ -87,4 +87,4 @@ cat $BOOT_MOUNT/user-data
 # Unmount
 sudo umount "$DEVICE$BOOT_PARTITION"
 
-echo "Done! Now you can remove SD and insert into raspberry pi ${hostname}"
+echo "Done! Now you can remove SD and insert into raspberry pi pi3"

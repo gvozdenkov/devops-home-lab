@@ -15,21 +15,13 @@ terraform {
 
 # Local values for templates
 locals {
-  pi_nodes = { for k, v in var.cluster_nodes : k => v if contains(v.services, "pi") }
+  pi_nodes = { for k, v in var.cluster_nodes : k => v if contains(v.tags, "pi") }
 }
 
 # Output cluster information
 output "cluster_info" {
   description = "Cluster information summary"
   value = {
-    total_nodes = length(var.cluster_nodes)
-    controllers = { for k, v in var.cluster_nodes : k => v if v.role == "controller" }
-    workers     = { for k, v in var.cluster_nodes : k => v if v.role == "worker" }
-    ip_range    = [for node in var.cluster_nodes : node.static_ip]
+    pi_nodes = local.pi_nodes
   }
-}
-
-output "pi_nodes" {
-  description = "Pi nodes in cluster"
-  value       = local.pi_nodes
 }
