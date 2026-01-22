@@ -18,5 +18,4 @@ users:
 
     ssh_authorized_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO1y75bxiLzetHQthElV+4cj3G6ZSf5aHrDkIVNd+dSz ansible home lab eurocom
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKafBr+1LWBjzhg7AZ9vFtbuUmOoB0wajUZm19f/4/hJ bigbox ansible homelab
-  
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBiyFzBgq5Ix4JeeWOhhWfsjiuGhblIJ4d86oAmtZEV7 bigbox ansible homelab
