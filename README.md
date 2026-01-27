@@ -11,6 +11,27 @@ For the start I use 2 Raspberry Pi to constract bare metal kubernetes cluster:
 
 ![2 pies on the board](README_img/pies.jpg)
 
+## Use devcontainers for dev:)
+
+With `devpod`
+
+```sh
+# Clean fash build
+devpod up . --dotfiles git@github.com:gvozdenkov/dotfiles.git
+
+# Recreate when changes in devcontainer.json, Dockerfile or any other env changes
+devpod up . --dotfiles git@github.com:gvozdenkov/dotfiles.git --recreate
+
+# Complately restart workspace from a clean slate
+devpod up . --dotfiles git@github.com:gvozdenkov/dotfiles.git --reset
+
+# Any time after build to connect to workspace with IDE
+devpod up . --ide vscode
+
+# Connect to container via ssh
+ssh devops-home-lab.devpod
+```
+
 ### Terraform
 
 Terraform in this context acts as an orchestration and configuration management tool rather than a true infrastructure provisioner

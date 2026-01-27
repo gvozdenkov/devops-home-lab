@@ -22,3 +22,6 @@ crash.*.log
 # misc
 *.img
 *img.xz
+
+# devcontainer
+.devpod-internal
