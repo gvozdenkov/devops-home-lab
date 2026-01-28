@@ -17,7 +17,7 @@ variable "cluster_nodes" {
       role        = ""
       os_version  = "24.04.3"
       os_name     = "ubuntu-24.04.3-preinstalled-server-arm64+raspi"
-      tags        = ["pi"]
+      tags        = ["pi", "pi5"]
     },
     "pi3" = {
       mac_address = "b8:27:eb:ef:91:bc"
@@ -26,7 +26,7 @@ variable "cluster_nodes" {
       role        = ""
       os_version  = "24.04.3"
       os_name     = "ubuntu-24.04.3-preinstalled-server-arm64+raspi"
-      tags        = ["pi"]
+      tags        = ["pi", "pi3"]
     },
   }
 }

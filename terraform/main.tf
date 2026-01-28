@@ -16,6 +16,8 @@ terraform {
 # Local values for templates
 locals {
   pi_nodes = { for k, v in var.cluster_nodes : k => v if contains(v.tags, "pi") }
+  pi5_node = { for k, v in var.cluster_nodes : k => v if contains(v.tags, "pi5") }
+  pi3_node = { for k, v in var.cluster_nodes : k => v if contains(v.tags, "pi3") }
 }
 
 # Output cluster information

@@ -52,3 +52,11 @@ resource "local_file" "pi_user_data" {
 
   file_permission = "0600"
 }
+
+resource "local_file" "ansible_inventory" {
+  filename = "${path.module}/ansible/inventory.ini"
+
+  content = templatefile("${path.module}/templates/inventory.tftpl", {
+    pi_nodes = local.pi_nodes
+  })
+}
