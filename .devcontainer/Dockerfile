@@ -35,6 +35,9 @@ RUN apt-get update \
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir ansible ansible-lint argcomplete
 
+COPY ansible-requirements.yml .
+RUN ansible-galaxy collection install -r ansible-requirements.yml --force
+
 # 3. Install Terraform (Manual Yandex Mirror)
 RUN curl -Lo terraform.zip "https://hashicorp-releases.yandexcloud.net/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip" \
     && unzip terraform.zip \

@@ -28,7 +28,7 @@ devpod up . --dotfiles git@github.com:gvozdenkov/dotfiles.git --reset
 # Any time after build to connect to workspace with IDE
 devpod up . --ide vscode
 
-# Connect to container via ssh
+# Connect to container via ssh and then execute commands for terrafrom and ansible
 ssh devops-home-lab.devpod
 ```
 
@@ -46,3 +46,11 @@ If some `pi` node breaks, or sd card breaks, or add new node:
 2. `terraform apply` new changes. This will generate cloud-init config files and script to write os on SD card for new node in `/terraform/raspberry-pi`
 3. Insert SD card and execute `/terraform/raspberry-pi/xxx-prepare-os.sh` script to write os to SD card
 4. Insert SD card to `pi` and this should work
+
+### Ansible
+
+```sh
+cd terraform/ansible/
+
+ansible-playbook -i inventory.ini playbook.yml
+```

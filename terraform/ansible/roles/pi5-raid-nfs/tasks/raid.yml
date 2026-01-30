@@ -1,0 +1,32 @@
+---
+- name: Create RAID 1 arrays
+  ansible.builtin.shell: |
+    mdadm --create --verbose {{ device }} \
+      --level={{ level }} \
+      --raid-devices={{ devices | length }} \
+      {{ devices | join(' ') }}
+  vars:
+    device: "/dev/md{{ item.md_number }}"
+    level: "{{ item.level }}"
+    devices: "{{ item.devices }}"
+  loop: "{{ pi5_raid_arrays }}"
+  loop_control:
+    label: "RAID{{ item.level }} on {{ item.devices | join(', ') }}"
+  register: raid_create
+  changed_when: "'mdadm: created' in raid_create.stdout"
+
+- name: Wait for RAID to sync
+  ansible.builtin.shell: cat /proc/mdstat
+  register: mdstat
+  until: "'finish=' in mdstat.stdout or 'resync=' not in mdstat.stdout"
+  retries: 60
+  delay: 5
+  loop: "{{ pi5_raid_arrays }}"
+  loop_control:
+    label: "Wait for RAID{{ item.level }} on {{ item.devices | join(', ') }} sync"
+
+- name: Save RAID configuration
+  ansible.builtin.shell: |
+    mdadm --detail --scan >> /etc/mdadm/mdadm.conf || true
+    update-initramfs -u
+  changed_when: true

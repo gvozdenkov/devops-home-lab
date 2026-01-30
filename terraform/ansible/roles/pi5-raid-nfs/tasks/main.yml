@@ -1,0 +1,25 @@
+---
+- name: Install required packages
+  ansible.builtin.apt:
+    name:
+      - mdadm
+      - lvm2
+      - nfs-kernel-server
+    state: present
+    update_cache: yes
+
+- name: Configure RAID arrays
+  ansible.builtin.include_tasks: raid.yml
+
+# - name: Configure LVM
+#   ansible.builtin.include_tasks: lvm.yml
+
+# - name: Configure NFS
+#   ansible.builtin.include_tasks: nfs.yml
+
+# - name: Make mounts persistent in /etc/fstab
+#   ansible.builtin.template:
+#     src: templates/fstab.j2
+#     dest: /etc/fstab
+#     backup: true
+#     validate: "mount -f %s"

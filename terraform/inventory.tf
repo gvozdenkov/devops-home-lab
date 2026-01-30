@@ -60,3 +60,11 @@ resource "local_file" "ansible_inventory" {
     pi_nodes = local.pi_nodes
   })
 }
+
+resource "local_file" "role_pi5_raid_nfs" {
+  filename = "${path.module}/ansible/roles/pi5-raid-nfs/defaults/main.yml"
+
+  content = templatefile("${path.module}/templates/ansible/roles/pi5-raid-nfs/defaults/main.tftpl", {
+    node = var.cluster_nodes["pi5"]
+  })
+}
