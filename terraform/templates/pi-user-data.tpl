@@ -9,12 +9,10 @@ ssh_pwauth: false
 
 users:
   - name: ansible
-    groups: users,adm,dialout,audio,netdev,video,plugdev,cdrom,games,input,gpio,spi,i2c,render,sudo
+    gecos: Ansible automation only user
+    groups: [sudo, adm]
+    sudo: "ALL=(ALL) NOPASSWD:ALL"
     shell: /bin/bash
-
-    # To use sudo with user password
-    lock_passwd: false
-    passwd: $6$DqpOKhGL.o/YkNl5$zjDgYyb7deCK8ul6dCCIITR52iX.WfbuTKdBiOHSCiXZYjiLLjPT39qs0xxg/SttGNhqAqBTgC4IU87sEa86I1
 
     ssh_authorized_keys:
   %{ for key in ssh_public_keys ~}
