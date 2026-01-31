@@ -46,7 +46,7 @@ variable "cluster_config" {
     dns_servers = ["192.168.88.1"]
     timezone    = "UTC"
     ssh_public_keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO1y75bxiLzetHQthElV+4cj3G6ZSf5aHrDkIVNd+dSz ansible home lab eurocom",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEk2NJ84oCGIpKIJ9zz+8lid8vFg/qHW3UvJeDe+eLHE ansible home lab eurocom",
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBiyFzBgq5Ix4JeeWOhhWfsjiuGhblIJ4d86oAmtZEV7 bigbox ansible homelab",
     ]
   }
