@@ -1,9 +1,0 @@
-[Unit]
-Description=Wake RAID disks every 5 minutes
-
-[Timer]
-OnCalendar=*:0/5
-Persistent=true
-
-[Install]
-WantedBy=timers.target

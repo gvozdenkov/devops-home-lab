@@ -62,35 +62,3 @@
     update-initramfs -u
   changed_when: true
   tags: raid
-
-# Wake disks (no sleep)
-
-- name: Get RAID disk devices
-  ansible.builtin.set_fact:
-    # raid_disks: ["/dev/sdc", "/dev/sdd", "/dev/sda", "/dev/sdb"]
-    raid_disks: "{{ raid_disks | default([]) + item.devices }}"
-  loop: "{{ pi5_raid_arrays }}"
-  tags: raid
-
-- name: Create HDD wake-up systemd service
-  ansible.builtin.template:
-    src: wake-disks.service.j2
-    dest: /etc/systemd/system/wake-disks.service
-    mode: "0644"
-  notify: systemd reload
-  tags: raid
-
-- name: Create HDD wake-up systemd timer
-  ansible.builtin.copy:
-    src: wake-disks.timer
-    dest: /etc/systemd/system/wake-disks.timer
-    mode: "0644"
-  notify: systemd reload
-  tags: raid
-
-- name: Enable and start wake-disks timer
-  ansible.builtin.systemd:
-    name: wake-disks.timer
-    enabled: yes
-    state: started
-  tags: raid
