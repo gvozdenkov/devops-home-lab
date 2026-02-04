@@ -7,6 +7,7 @@
     label: "Check raid md{{ item.md_number }} "
   changed_when: false
   failed_when: false
+  tags: raid
 
 - name: Create RAID 1 arrays
   ansible.builtin.shell: |
@@ -27,6 +28,7 @@
   # Create raid only if it don't created yet
   # mdadm --detail /dev/mdX returns rc 0 if the array exists, non‑zero if it does not
   when: mdstat_check.results[raid_idx].rc != 0
+  tags: raid
 
 - name: Wait for RAID to sync
   ansible.builtin.shell: cat /proc/mdstat
@@ -35,14 +37,14 @@
   # cat /proc/mdstat example
   # Personalities : [raid0] [raid1] [raid6] [raid5] [raid4] [raid10]
   # md1 : active raid1 sdb[1] sda[0]
-        # 2930134464 blocks super 1.2 [2/2] [UU]
-        # [>....................]  resync =  2.4% (70672576/2930134464) finish=834.4min speed=57114K/sec
-        # bitmap: 22/22 pages [88KB], 65536KB chunk
+  # 2930134464 blocks super 1.2 [2/2] [UU]
+  # [>....................]  resync =  2.4% (70672576/2930134464) finish=834.4min speed=57114K/sec
+  # bitmap: 22/22 pages [88KB], 65536KB chunk
 
   # md0 : active raid1 sdd[1] sdc[0]
-        # 1465006464 blocks super 1.2 [2/2] [UU]
-        # [>....................]  resync =  4.8% (70766464/1465006464) finish=401.0min speed=57934K/sec
-        # bitmap: 11/11 pages [44KB], 65536KB chunk
+  # 1465006464 blocks super 1.2 [2/2] [UU]
+  # [>....................]  resync =  4.8% (70766464/1465006464) finish=401.0min speed=57934K/sec
+  # bitmap: 11/11 pages [44KB], 65536KB chunk
 
   # unused devices: <none>
   until: "'resync =' not in mdstat.stdout"
@@ -52,9 +54,43 @@
   loop_control:
     label: "Wait for RAID{{ item.level }} (md{{item.md_number}}) on {{ item.devices | join(', ') }} sync"
   changed_when: false
+  tags: raid
 
 - name: Save RAID configuration
   ansible.builtin.shell: |
     mdadm --detail --scan >> /etc/mdadm/mdadm.conf || true
     update-initramfs -u
   changed_when: true
+  tags: raid
+
+# Wake disks (no sleep)
+
+- name: Get RAID disk devices
+  ansible.builtin.set_fact:
+    # raid_disks: ["/dev/sdc", "/dev/sdd", "/dev/sda", "/dev/sdb"]
+    raid_disks: "{{ raid_disks | default([]) + item.devices }}"
+  loop: "{{ pi5_raid_arrays }}"
+  tags: raid
+
+- name: Create HDD wake-up systemd service
+  ansible.builtin.template:
+    src: wake-disks.service.j2
+    dest: /etc/systemd/system/wake-disks.service
+    mode: "0644"
+  notify: systemd reload
+  tags: raid
+
+- name: Create HDD wake-up systemd timer
+  ansible.builtin.copy:
+    src: wake-disks.timer
+    dest: /etc/systemd/system/wake-disks.timer
+    mode: "0644"
+  notify: systemd reload
+  tags: raid
+
+- name: Enable and start wake-disks timer
+  ansible.builtin.systemd:
+    name: wake-disks.timer
+    enabled: yes
+    state: started
+  tags: raid

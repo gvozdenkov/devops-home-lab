@@ -1,0 +1,34 @@
+---
+# LVM Tasks (add after Save RAID configuration)
+
+- name: Create Physical Volumes
+  community.general.lvm_pv:
+    device: "{{ item.device }}"
+    state: present
+    force: yes
+  loop: "{{ pi5_vgs }}"
+  loop_control:
+    label: "PV on {{ item.device }}"
+  tags: lvm
+
+- name: Create Volume Groups
+  community.general.lvg:
+    vg: "{{ item.name }}"
+    pvs: "{{ item.device }}"
+    state: present
+  loop: "{{ pi5_vgs }}"
+  loop_control:
+    label: "VG {{ item.name }} from {{ item.device }}"
+  tags: lvm
+
+- name: Create Logical Volumes
+  community.general.lvol:
+    vg: "{{ item.vg }}"
+    lv: "{{ item.name }}"
+    size: "{{ item.size }}"
+    state: present
+    force: yes # to change lv size +- change ../defaults/main.yml pi5_lvs size value
+  loop: "{{ pi5_lvs }}"
+  loop_control:
+    label: "LV {{ item.name }} on {{ item.vg }} ({{ item.size }})"
+  tags: lvm

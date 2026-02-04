@@ -5,14 +5,18 @@
       - mdadm
       - lvm2
       - nfs-kernel-server
+      - hdparm
     state: present
     update_cache: yes
+  tags: packages
 
 - name: Configure RAID arrays
   ansible.builtin.include_tasks: raid.yml
+  tags: raid
 
-# - name: Configure LVM
-#   ansible.builtin.include_tasks: lvm.yml
+- name: Configure LVM
+  ansible.builtin.include_tasks: lvm.yml
+  tags: lvm
 
 # - name: Configure NFS
 #   ansible.builtin.include_tasks: nfs.yml

@@ -1,0 +1,6 @@
+[Unit]
+Description=Wake RAID disks
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'disks="{{ raid_disks | join(" ") }}"; for disk in $disks; do hdparm -C "$disk" >/dev/null 2>&1||true; dd if="$disk" of=/dev/null bs=1M count=1 status=none >/dev/null 2>&1||true; done'

@@ -53,4 +53,12 @@ If some `pi` node breaks, or sd card breaks, or add new node:
 cd terraform/ansible/
 
 ansible-playbook -i inventory.ini playbook.yml
+
+# use tags to run only specific tasks
+ansible-playbook -i inventory.ini playbook.yml --tags lvm
+ansible-playbook -i inventory.ini playbook.yml --tags lvm,raid
+ansible-playbook -i inventory.ini playbook.yml --skip-tags packages
+
+# List available tags
+ansible-playbook playbook.yml --list-tags
 ```

@@ -13,7 +13,7 @@ pi5_raid_arrays:
     md_number: 1
 
 # LVM: VG per array
-pi5_vg_names:
+pi5_vgs:
   - name: "vg_raid0"
     device: "/dev/md0"
   - name: "vg_raid1"
