@@ -47,7 +47,7 @@ variable "cluster_config" {
     timezone    = "UTC"
     ssh_public_keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEk2NJ84oCGIpKIJ9zz+8lid8vFg/qHW3UvJeDe+eLHE ansible home lab eurocom",
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBiyFzBgq5Ix4JeeWOhhWfsjiuGhblIJ4d86oAmtZEV7 bigbox ansible homelab",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGDaf2argvNXeYViOuQJZCpllMWKFEOW8GzEtjgOx08p bigbox ansible homelab",
     ]
   }
 }
