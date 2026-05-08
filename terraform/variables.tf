@@ -15,8 +15,8 @@ variable "cluster_nodes" {
       static_ip   = "192.168.88.5/24"
       hostname    = "pi5"
       role        = ""
-      os_version  = "24.04.3"
-      os_name     = "ubuntu-24.04.3-preinstalled-server-arm64+raspi"
+      os_version  = "24.04.4"
+      os_name     = "ubuntu-24.04.4-preinstalled-server-arm64+raspi"
       tags        = ["pi", "pi5"]
     },
     "pi3" = {
