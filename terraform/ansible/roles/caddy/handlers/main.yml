@@ -1,0 +1,7 @@
+---
+- name: Restart caddy container
+  containers.podman.podman_container:
+    name: '{{ caddy_container_name }}'
+    image: '{{ caddy_image }}'
+    state: started
+    restart: true
