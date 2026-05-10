@@ -7,7 +7,6 @@ caddy_restart_policy: unless-stopped
 # Ports (host:container)
 caddy_port_http: 80
 caddy_port_https: 443
-caddy_admin_port: 2019
 
 # Host paths
 caddy_config_dir: "/home/{{ ansible_user }}/caddy"
