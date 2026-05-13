@@ -1,5 +1,7 @@
 ---
 - name: Ensure caddy config directories exist
+  become: true
+  become_user: '{{ podman_rootless_user }}'
   ansible.builtin.file:
     path: '{{ item }}'
     state: directory
@@ -9,6 +11,8 @@
     - '{{ caddy_data_dir }}'
 
 - name: Build basic Caddyfile with reverse proxy sites
+  become: true
+  become_user: '{{ podman_rootless_user }}'
   ansible.builtin.copy:
     dest: '{{ caddy_config_file }}'
     mode: '0644'
@@ -25,18 +29,16 @@
   notify: Restart caddy container
 
 - name: Run Caddy container with Podman
-  become: false
+  become: true
+  become_user: '{{ podman_rootless_user }}'
   containers.podman.podman_container:
     name: '{{ caddy_container_name }}'
     image: '{{ caddy_image }}'
     state: started
     restart_policy: '{{ caddy_restart_policy }}'
-    network: host
-    # ports:
-    #   - '{{ caddy_port_http }}:80'
-    #   - '{{ caddy_port_https }}:443'
+    ports:
+      - '{{ caddy_port_http }}:80'
+      - '{{ caddy_port_https }}:443'
     volumes:
       - '{{ caddy_config_file }}:/etc/caddy/Caddyfile:Z'
       - '{{ caddy_data_dir }}:/data:Z'
-    generate_systemd:
-      path: ~/.config/systemd/user/

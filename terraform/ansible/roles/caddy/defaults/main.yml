@@ -9,7 +9,7 @@ caddy_port_http: 80
 caddy_port_https: 443
 
 # Host paths
-caddy_config_dir: "/home/{{ ansible_user }}/caddy"
+caddy_config_dir: "/home/{{ podman_rootless_user }}/caddy"
 caddy_data_dir: "{{ caddy_config_dir }}/data"
 caddy_config_file: "{{ caddy_config_dir }}/Caddyfile"
 

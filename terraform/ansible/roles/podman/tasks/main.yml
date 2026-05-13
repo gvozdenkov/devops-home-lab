@@ -4,19 +4,20 @@
   ansible.builtin.apt:
     name: '{{ podman_extra_packages }}'
     state: present
-    update_cache: '{{ podman_update_cache }}'
+    update_cache: true
 
 - name: Ensure rootless user exists
   become: true
-  when: podman_enable_rootless
   ansible.builtin.user:
     name: '{{ podman_rootless_user }}'
     state: present
+    create_home: true
+    shell: /usr/sbin/nologin
 
 - name: Enable linger for rootless user
+  become: true
   ansible.builtin.command:
     cmd: loginctl enable-linger "{{ podman_rootless_user }}"
-  when: podman_enable_rootless
   changed_when: false
 
 - name: Configure subuids for rootless operation
@@ -26,7 +27,6 @@
     line: '{{ podman_rootless_user }}:100000:65536'
     create: true
     mode: '0644'
-  when: podman_enable_rootless
   notify: Reload systemd
 
 - name: Configure subgids for rootless operation
@@ -36,7 +36,6 @@
     line: '{{ podman_rootless_user }}:100000:65536'
     create: true
     mode: '0644'
-  when: podman_enable_rootless
   notify: Reload systemd
 
 - name: Permit rootless containers to bind to ports 80 and 443

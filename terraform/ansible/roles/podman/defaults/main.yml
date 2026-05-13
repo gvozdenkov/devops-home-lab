@@ -1,7 +1,4 @@
 ---
-# Whether to enable rootless helpers
-podman_enable_rootless: true
-
 # Extra additional packages (crun, slirp4netns, etc.)
 # Set to [] if you want only podman
 podman_extra_packages:
@@ -10,11 +7,4 @@ podman_extra_packages:
   - slirp4netns
   - fuse-overlayfs
   - uidmap
-
-# Whether to update apt cache
-podman_update_cache: true
-
-# User for rootless Podman (if enabled)
-# Default to the ansible user, but can be overridden
-default_user: "{{ ansible_user }}"
-podman_rootless_user: "{{ podman_rootless_user | default(default_user) }}"
+  - acl
